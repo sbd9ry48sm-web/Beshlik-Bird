@@ -4,63 +4,99 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Beshlik Bird</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#e9f3ee;--fg:#1c3a30;--card:#fff;--mut:#5a6f66;--line:#cfe0d6;--bad:#c2410c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1b17;--fg:#e4f1ea;--card:#162822;--mut:#9db5aa;--line:#264035;--bad:#fb923c;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e1b17;--fg:#e4f1ea;--card:#162822;--mut:#9db5aa;--line:#264035;--bad:#fb923c;color-scheme:dark}
+:root{--bg:#030806;--panel:#08130d;--neon:#39ff14;--lime:#b6ff3b;--ink:#d9ffe3;--mut:#7fa88b;--line:#14391f;--bad:#ff3d5a;--px:"Press Start 2P","Courier New",monospace;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-rounded,"Nunito","Trebuchet MS",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
-main{max-width:440px;margin:0 auto;padding:12px 14px 32px}
-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
-h1{font-size:2.3rem;line-height:1.1;font-weight:800;margin:6px 0}
-h2{font-size:1.1rem;margin:0}
-p{margin:6px 0}
-.mut{color:var(--mut)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:12px}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 50% 0%,#0a2414 0%,var(--bg) 62%);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}
+.bgfx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+#city{position:absolute;left:0;right:0;bottom:0;height:42vh;opacity:.9}#city svg{width:100%;height:100%;display:block}
+.smoke{position:absolute;width:60vw;height:60vw;max-width:520px;max-height:520px;border-radius:50%;background:radial-gradient(circle,rgba(57,255,20,.2),transparent 65%);filter:blur(24px);animation:drift 22s ease-in-out infinite alternate}
+.s1{left:-15%;top:8%}.s2{right:-20%;top:42%;animation-duration:28s}.s3{left:20%;bottom:-12%;animation-duration:34s}
+@keyframes drift{to{transform:translate(8vw,-6vh) scale(1.15)}}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.leaf{position:absolute;color:var(--neon);opacity:.11}
+@media (prefers-reduced-motion:reduce){.smoke,#logoBird svg{animation:none}}
+main{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:12px 14px 40px}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+body:not(.in) header{flex-direction:column;justify-content:center;text-align:center;margin-top:8px}
+.in header{justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}body:not(.in) .brand{flex-direction:column}
+#logoBird svg{width:110px;height:auto;display:block;image-rendering:pixelated;animation:bob 2.4s ease-in-out infinite}.in #logoBird svg{width:58px}
+h1{font-family:var(--px);font-size:clamp(1.3rem,7vw,2.1rem);line-height:1.3;margin:0;color:var(--neon);text-shadow:0 0 14px rgba(57,255,20,.7)}h1 span{color:var(--lime)}.in h1{font-size:1rem}
+h2{font-family:var(--px);font-size:.72rem;line-height:1.6;color:var(--lime);margin:0 0 8px}
+p{margin:6px 0}.mut{color:var(--mut)}.small{font-size:.82rem}
+.card{background:linear-gradient(180deg,rgba(11,24,16,.93),rgba(6,14,9,.93));border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px;box-shadow:0 8px 30px rgba(0,0,0,.45)}
 .clock{text-align:center}
-#time{font-size:2.2rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-canvas{display:block;margin:12px auto 0;border-radius:14px;touch-action:none;-webkit-user-select:none;user-select:none}
-input{display:block;width:100%;box-sizing:border-box;margin-top:8px;font:inherit;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
-button{font:inherit;font-weight:700;padding:11px 16px;border:0;border-radius:12px;background:#2f7a54;color:#fff}
-button.alt{background:transparent;color:var(--fg);border:1px solid var(--line)}
-button.lnk{background:none;color:var(--mut);padding:6px 0;font-weight:600;text-decoration:underline}
-.row{display:flex;gap:8px;margin-top:10px}.row button{flex:1}
-#start{display:block;width:100%;margin-top:10px;font-size:1.15rem;padding:14px}
+#time{font-family:var(--px);font-size:clamp(1.2rem,6.5vw,1.8rem);color:var(--neon);text-shadow:0 0 14px rgba(57,255,20,.7);margin-top:6px}
+.kbcard{border-color:var(--neon);box-shadow:0 0 22px rgba(57,255,20,.25)}#kb{font-weight:700}#warn{color:var(--bad);font-weight:800}
+.danger{border-color:#5a1424}.danger h2{color:var(--bad)}
+canvas{display:block;margin:14px auto 0;border:3px solid var(--neon);border-radius:12px;box-shadow:0 0 24px rgba(57,255,20,.45);touch-action:none;-webkit-user-select:none;user-select:none}
+input{display:block;width:100%;box-sizing:border-box;margin-top:10px;font:inherit;font-size:1rem;padding:13px;border-radius:10px;border:1px solid var(--line);background:#050d08;color:var(--ink)}
+input:focus{outline:2px solid var(--neon);outline-offset:1px}
+button{font:inherit;cursor:pointer}
+.btn{font-family:var(--px);font-size:.72rem;text-transform:uppercase;padding:15px 10px;border:0;border-radius:10px;background:var(--neon);color:#021006;box-shadow:0 0 16px rgba(57,255,20,.5)}
+.btn.alt{background:transparent;color:var(--neon);border:2px solid var(--neon);box-shadow:none}
+.lnk{background:none;border:0;color:var(--mut);font-family:var(--px);font-size:.6rem;padding:10px 0;text-decoration:underline;text-transform:uppercase}
+.row{display:flex;gap:8px;margin-top:12px}.row .btn{flex:1}
+#start{display:block;width:100%;margin-top:12px;font-size:.9rem;padding:19px}
 #msg{color:var(--bad);min-height:1.2em}
-ol{list-style:none;margin:8px 0 0;padding:0}
-li{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
-li:first-child{border-top:0}
+ol,ul{list-style:none;margin:6px 0 0;padding:0}
+li{display:flex;gap:10px;padding:8px 6px;border-top:1px solid var(--line)}li:first-child{border-top:0}
 li .n{width:1.6rem;color:var(--mut)}li .s{margin-left:auto;font-weight:800}
-li.me .nm{font-weight:800}li.bad .s,li.bad .tag{color:var(--bad)}
+li.me .nm{font-weight:800;color:var(--lime)}li.bad{background:rgba(255,61,90,.12);border-radius:8px}li.bad .n,li.bad .s{color:var(--bad)}
 .tag{font-size:.8rem;color:var(--mut)}
-.shame{display:block;font-size:.75rem;font-weight:800;letter-spacing:.06em;color:var(--bad)}
+.shame{display:block;font-family:var(--px);font-size:.6rem;line-height:1.6;color:var(--bad);margin-top:4px}
+.ic{font-family:var(--px);color:var(--neon);width:1.5rem;text-align:center;flex:none}.deadly,.deadly .ic{color:var(--bad)}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
+<div class="bgfx" aria-hidden="true"><div class="smoke s1"></div><div class="smoke s2"></div><div class="smoke s3"></div>
+<svg class="leaf" style="width:190px;height:175px;right:-34px;top:70px;transform:rotate(28deg)"><use href="#leaf"/></svg>
+<svg class="leaf" style="width:150px;height:140px;left:-30px;top:52%;transform:rotate(-24deg)"><use href="#leaf"/></svg><div id="city"></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="leaf" viewBox="-50 -62 100 92" fill="currentColor"><ellipse cx="0" cy="-30" rx="6.5" ry="30" transform="rotate(0)"/><ellipse cx="0" cy="-27" rx="6.5" ry="27" transform="rotate(-32)"/><ellipse cx="0" cy="-27" rx="6.5" ry="27" transform="rotate(32)"/><ellipse cx="0" cy="-21" rx="6.5" ry="21" transform="rotate(-64)"/><ellipse cx="0" cy="-21" rx="6.5" ry="21" transform="rotate(64)"/><ellipse cx="0" cy="-13" rx="6.5" ry="13" transform="rotate(-88)"/><ellipse cx="0" cy="-13" rx="6.5" ry="13" transform="rotate(88)"/><rect x="-1.5" y="0" width="3" height="24"/></symbol></svg>
 <main>
-<header><h1>Beshlik Bird</h1><span><span id="who" class="mut"></span> <button class="lnk" id="out" hidden>Logga ut</button></span></header>
+<header>
+<div class="brand"><div id="logoBird" aria-hidden="true"></div><h1>BESHLİK<br><span>BIRD</span></h1></div>
+<span><span id="who" class="mut"></span> <button class="lnk" id="out" hidden>Logga ut</button></span>
+</header>
 
-<div class="card clock"><div class="mut" id="tlabel">Laddar…</div><div id="time" role="timer">--:--:--</div><p id="loser" style="color:var(--bad);font-weight:800"></p>
-<p class="mut" style="font-size:.9rem;margin:10px 0 0">Spelet drar igång varje måndag kl 13:00 och är öppet till fredag kl 13:00 (svensk tid). Den som får lägst poäng under veckan får tyvärr straffet att klippa en Beshlik.</p></div>
+<div class="card clock"><div class="mut" id="tlabel">Laddar…</div><div id="time" role="timer">--:--:--</div><p id="loser" style="color:var(--bad);font-weight:800"></p></div>
 
 <section id="authView" hidden>
 <form class="card" id="authForm">
-<h2>Logga in eller skapa konto</h2>
+<h2>LOGGA IN</h2>
 <input id="u" placeholder="Användarnamn" autocomplete="username" maxlength="14" autocapitalize="none" required>
 <input id="p" type="password" placeholder="Lösenord" autocomplete="current-password" minlength="6" required>
 <p id="msg" role="alert"></p>
-<div class="row"><button type="submit">Logga in</button><button type="button" class="alt" id="signup">Skapa konto</button></div>
-<p class="mut" style="font-size:.85rem">Användarnamnet ska vara 3–14 tecken (bokstäver, siffror, _ eller -). Lösenordet minst 6 tecken.</p>
+<div class="row"><button type="submit" class="btn">Logga in</button><button type="button" class="btn alt" id="signup">Skapa konto</button></div>
+<button type="button" class="lnk" id="forgot">Glömt lösenord?</button>
+<p class="mut small" id="forgotInfo" hidden>Lösenord kan inte återställas automatiskt, eftersom konton skapas utan e-post. Be den som driver tävlingen att sätta ett nytt lösenord åt dig.</p>
+<p class="mut small">Användarnamnet ska vara 3–14 tecken (bokstäver, siffror, _ eller -). Lösenordet minst 6 tecken.</p>
 </form>
+<div class="card">
+<h2>SÅ HÄR GÅR TÄVLINGEN TILL</h2>
+<ul>
+<li><span class="ic">▶</span><span>Tävlingen startar varje <b>måndag kl 13:00</b>.</span></li>
+<li><span class="ic">■</span><span>Tävlingen stänger varje <b>fredag kl 13:00</b>.</span></li>
+<li><span class="ic">∞</span><span>Du får spela obegränsat antal gånger under tävlingsperioden.</span></li>
+<li><span class="ic">★</span><span>Ditt högsta resultat under veckan räknas som ditt personbästa.</span></li>
+<li class="deadly"><span class="ic">☠</span><span>Den med lägst personbästa när tävlingen stänger blir veckans <b>KLIPPA BESHLİK</b>.</span></li>
+</ul>
+<p class="mut small">All tid är svensk tid (Europe/Stockholm). Spelet är låst under helgen och öppnar igen måndag kl 13:00.</p>
+</div>
 </section>
 
 <section id="gameView" hidden>
+<div class="card kbcard"><h2>VECKANS KLIPPA BESHLİK</h2><p id="kb">Laddar…</p><p id="warn"></p></div>
 <canvas id="c" width="360" height="640" aria-label="Beshlik Bird, ett spel där du flaxar en fågel genom rör"></canvas>
-<button id="start">Starta spelet</button>
+<button id="start" class="btn">Starta spelet</button>
 <button class="lnk" id="mute" style="display:block;margin:6px auto 0">Ljud: på</button>
-<div class="card"><h2>Veckans ställning</h2><ol id="board"></ol><p class="mut" id="boardMsg"></p></div>
-<div class="card"><h2>Förra veckans förlorare</h2><p class="mut" id="lastLoser">–</p></div>
+<div class="card danger"><h2>☠ RISKZONEN</h2><p class="mut small" style="margin:0">De tre lägsta personbästa just nu.</p><ol id="risk"></ol></div>
+<div class="card"><h2>TOPPLISTA – PERSONBÄSTA</h2><ol id="board"></ol><p class="mut" id="boardMsg"></p></div>
+<div class="card"><h2>FÖRRA VECKANS KLIPPA BESHLİK</h2><p class="mut" id="lastLoser">–</p></div>
 </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -69,7 +105,7 @@ const SB_URL="https://ibeplvzfnuoxuqunyckt.supabase.co",SB_KEY="sb_publishable_j
 const sb=window.supabase.createClient(SB_URL,SB_KEY);
 const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,"0");
 let uname="",T=null,rows=[];
-const shame=()=>{const q=document.createElement("span");q.className="shame";q.textContent="KLIPPA BESHLIK";return q};
+const shame=()=>{const q=document.createElement("span");q.className="shame";q.textContent="KLIPPA BESHLİK";return q};
 const toEmail=u=>"flax."+[...new TextEncoder().encode(u.toLowerCase())].map(b=>b.toString(16).padStart(2,"0")).join("")+"@gmail.com";
 
 // ---- svensk tid ----
@@ -88,7 +124,7 @@ function btn(){$("start").hidden=!(uname&&T.open&&st!=="play"&&st!=="dying");
 $("start").textContent=st==="over"?"Spela igen":"Starta spelet"}
 
 // ---- konto ----
-function show(){const on=!!uname;$("authView").hidden=on;$("gameView").hidden=!on;$("out").hidden=!on;$("who").textContent=on?uname:"";
+function show(){const on=!!uname;document.body.classList.toggle("in",on);$("authView").hidden=on;$("gameView").hidden=!on;$("out").hidden=!on;$("who").textContent=on?uname:"";
 if(on){size();load()}btn()}
 function validName(u){return /^[A-Za-zÅÄÖåäö0-9_-]{3,14}$/.test(u)}
 async function auth(create){
@@ -132,7 +168,7 @@ const s=document.createElement("span");s.className="s";s.textContent=r.best;
 li.append(n,m,t,s);ol.append(li)});
 if(!rows.length)$("boardMsg").textContent="Ingen har spelat den här veckan än.";
 const l=rows.length>1?rows[rows.length-1]:null;
-const lo=$("loser");lo.textContent="";if(!T.open&&l){lo.append("Veckans förlorare: "+l.name+" ("+l.best+" poäng)");lo.append(shame())}}
+const lo=$("loser");lo.textContent="";if(!T.open&&l){lo.append("Veckans förlorare: "+l.name+" ("+l.best+" poäng)");lo.append(shame())}risk()}
 
 // ---- spelet ----
 const c=$("c"),x=c.getContext("2d"),W=360,H=640,G=84,GAP=156,PW=58,BX=96;
@@ -207,6 +243,23 @@ else panel(130,[["Beshlik Bird","800 34px",252],["Tryck på Starta spelet","600 
 function loop(t){const dt=Math.min((t-last)/16.67,2)||1;last=t;update(dt,t);draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 setInterval(tick,1000);tick();setInterval(load,15000);
+function risk(){const n=rows.length,kb=$("kb"),rk=$("risk"),wn=$("warn");rk.textContent="";kb.textContent="";wn.textContent="";
+if(n<2){kb.textContent="Ingen ligger sist än. Spela och sätt ditt personbästa!";return}
+const l=rows[n-1],zone=rows.slice(-3).reverse();
+kb.append(T.open?"Just nu ligger "+l.name+" sist med "+l.best+" poäng.":l.name+" blev veckans KLIPPA BESHLİK med "+l.best+" poäng.");if(!T.open)kb.append(shame());
+if(T.open&&zone.some(r=>r.name===uname))wn.textContent="⚠ Du ligger i riskzonen! Slå ditt personbästa innan fredag kl 13:00.";
+zone.forEach((r,i)=>{const li=document.createElement("li");li.className=(r.name===uname?"me ":"")+(i===0?"bad":"");
+const a=document.createElement("span");a.className="n";a.textContent=i===0?"☠":"⚠";
+const m=document.createElement("span");m.className="nm";m.textContent=r.name;
+const sc=document.createElement("span");sc.className="s";sc.textContent=r.best;li.append(a,m,sc);rk.append(li)})}
+$("forgot").addEventListener("click",()=>{$("forgotInfo").hidden=!$("forgotInfo").hidden});
+(function(){let h="",xx=0,i=0;while(xx<720){const w=22+(i*7%5)*9,ht=60+(i*13%9)*14;h+='<rect x="'+xx+'" y="'+(300-ht)+'" width="'+w+'" height="'+ht+'" fill="#06110a"/>';
+for(let wy=300-ht+8;wy<296;wy+=14)for(let wx=xx+4;wx<xx+w-4;wx+=8)if((wx*7+wy*3)%5<2)h+='<rect x="'+wx+'" y="'+wy+'" width="3" height="4" fill="#39ff14" opacity=".55"/>';xx+=w+3;i++}
+$("city").innerHTML='<svg viewBox="0 0 720 300" preserveAspectRatio="xMidYMax slice">'+h+'</svg>'})();
+(function(){const R=["....KKKKKK.........","..KKYYYYYYKK.......",".KYYYYYYWWWYK......",".KYYYYYYWBWYK......","KYYOOYYYWWWYKKKK...","KYOOOOYYYYYKRRRRK..","KYOOOOYYYYYKRRRKJJE","KYYOOYYCCCYYKKKK...",".KYYYYCCCCCYK......","..KKYYYYYYKK.......","....KKKKKK........."],
+P={K:"#1a1208",Y:"#f8d33a",O:"#f0b429",W:"#fff",B:"#000",R:"#f15a24",C:"#fbeaa0",J:"#f6f1de",E:"#ff6a1a"};let h="";
+R.forEach((r,y)=>[...r].forEach((c,xx)=>{if(P[c])h+='<rect x="'+xx+'" y="'+y+'" width="1.02" height="1.02" fill="'+P[c]+'"/>'}));
+$("logoBird").innerHTML='<svg viewBox="0 0 19 11" shape-rendering="crispEdges">'+h+'</svg>'})();
 (async()=>{try{const{data}=await sb.auth.getSession();if(data.session)uname=(data.session.user.user_metadata||{}).username||""}catch(e){}show()})();
 </script>
 </body>
