@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Flax – veckans tävling</title>
+<title>Beshlik Bird</title>
 <style>
 :root{--bg:#e9f3ee;--fg:#1c3a30;--card:#fff;--mut:#5a6f66;--line:#cfe0d6;--bad:#c2410c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1b17;--fg:#e4f1ea;--card:#162822;--mut:#9db5aa;--line:#264035;--bad:#fb923c;color-scheme:dark}}
@@ -11,8 +11,8 @@
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-rounded,"Nunito","Trebuchet MS",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
 main{max-width:440px;margin:0 auto;padding:12px 14px 32px}
-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-h1{font-size:1.6rem;margin:4px 0}
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+h1{font-size:2.3rem;line-height:1.1;font-weight:800;margin:6px 0}
 h2{font-size:1.1rem;margin:0}
 p{margin:6px 0}
 .mut{color:var(--mut)}
@@ -39,7 +39,7 @@ li.me .nm{font-weight:800}li.bad .s,li.bad .tag{color:var(--bad)}
 </head>
 <body>
 <main>
-<header><h1>Flax</h1><span><span id="who" class="mut"></span> <button class="lnk" id="out" hidden>Logga ut</button></span></header>
+<header><h1>Beshlik Bird</h1><span><span id="who" class="mut"></span> <button class="lnk" id="out" hidden>Logga ut</button></span></header>
 
 <div class="card clock"><div class="mut" id="tlabel">Laddar…</div><div id="time" role="timer">--:--:--</div><p id="loser" style="color:var(--bad);font-weight:800"></p>
 <p class="mut" style="font-size:.9rem;margin:10px 0 0">Spelet drar igång varje måndag kl 13:00 och är öppet till fredag kl 13:00 (svensk tid). Den som får lägst poäng under veckan får tyvärr straffet att klippa en Beshlik.</p></div>
@@ -56,7 +56,7 @@ li.me .nm{font-weight:800}li.bad .s,li.bad .tag{color:var(--bad)}
 </section>
 
 <section id="gameView" hidden>
-<canvas id="c" width="360" height="640" aria-label="Flax, ett spel där du flaxar en fågel genom rör"></canvas>
+<canvas id="c" width="360" height="640" aria-label="Beshlik Bird, ett spel där du flaxar en fågel genom rör"></canvas>
 <button id="start">Starta spelet</button>
 <button class="lnk" id="mute" style="display:block;margin:6px auto 0">Ljud: på</button>
 <div class="card"><h2>Veckans ställning</h2><ol id="board"></ol><p class="mut" id="boardMsg"></p></div>
@@ -203,7 +203,7 @@ x.textAlign="center";
 if(!T.open)panel(130,[["Stängt","800 36px",252],["Öppnar måndag kl 13:00","600 16px",290]]);
 else if(st==="play"||st==="dying"){x.font="800 56px ui-rounded,system-ui,sans-serif";x.lineWidth=8;x.strokeStyle="#000";x.lineJoin="round";x.strokeText(score,W/2,100);x.fillStyle="#fff";x.fillText(score,W/2,100)}
 else if(st==="over"){const mine=(rows.find(r=>r.name===uname)||{}).best||0;panel(190,[["Slut!","800 40px",252],["Poäng: "+score,"700 22px",296],["Veckans bästa: "+Math.max(mine,score),"600 17px",330]])}
-else panel(130,[["Flax","800 38px",252],["Tryck på Starta spelet","600 17px",292]])}
+else panel(130,[["Beshlik Bird","800 34px",252],["Tryck på Starta spelet","600 17px",292]])}
 function loop(t){const dt=Math.min((t-last)/16.67,2)||1;last=t;update(dt,t);draw();requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 setInterval(tick,1000);tick();setInterval(load,15000);
