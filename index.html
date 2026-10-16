@@ -41,12 +41,12 @@ li.me .nm{font-weight:800}li.bad .s,li.bad .tag{color:var(--bad)}
 <main>
 <header><h1>Flax</h1><span><span id="who" class="mut"></span> <button class="lnk" id="out" hidden>Logga ut</button></span></header>
 
-<div class="card clock"><div class="mut" id="tlabel">Laddar…</div><div id="time" role="timer">--:--:--</div><p id="loser" style="color:var(--bad);font-weight:800"></p></div>
+<div class="card clock"><div class="mut" id="tlabel">Laddar…</div><div id="time" role="timer">--:--:--</div><p id="loser" style="color:var(--bad);font-weight:800"></p>
+<p class="mut" style="font-size:.9rem;margin:10px 0 0">Spelet drar igång varje måndag kl 13:00 och är öppet till fredag kl 13:00 (svensk tid). Den som får lägst poäng under veckan får tyvärr straffet att klippa en Beshlik.</p></div>
 
 <section id="authView" hidden>
 <form class="card" id="authForm">
 <h2>Logga in eller skapa konto</h2>
-<p class="mut">Spelet är öppet måndag till fredag 18:00 svensk tid. Den som har lägst poäng när spelet stänger blir veckans förlorare.</p>
 <input id="u" placeholder="Användarnamn" autocomplete="username" maxlength="14" autocapitalize="none" required>
 <input id="p" type="password" placeholder="Lösenord" autocomplete="current-password" minlength="6" required>
 <p id="msg" role="alert"></p>
@@ -65,7 +65,7 @@ li.me .nm{font-weight:800}li.bad .s,li.bad .tag{color:var(--bad)}
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-const SB_URL="https://zhhrxrimlpespjmpwqre.supabase.co",SB_KEY="sb_publishable_-JRASwLzorPstnibFrFDWw_wbA-Hpe-";
+const SB_URL="https://ibeplvzfnuoxuqunyckt.supabase.co",SB_KEY="sb_publishable_j4pLD_6AGQJAhsqx7ig3mQ_iJBhGyEn";
 const sb=window.supabase.createClient(SB_URL,SB_KEY);
 const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,"0");
 let uname="",T=null,rows=[];
@@ -76,8 +76,8 @@ const toEmail=u=>"flax."+[...new TextEncoder().encode(u.toLowerCase())].map(b=>b
 function now(){const p={};new Intl.DateTimeFormat("en-US",{timeZone:"Europe/Stockholm",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23",weekday:"short"}).formatToParts(new Date()).forEach(o=>p[o.type]=o.value);
 const dow=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].indexOf(p.weekday)+1,tod=+p.hour*3600+ +p.minute*60+ +p.second;
 const mon=k=>new Date(Date.UTC(+p.year,+p.month-1,+p.day-(dow-1)-k)).toISOString().slice(0,10);
-const open=dow<5||(dow===5&&tod<18*3600);
-return{open,wk:mon(0),prev:mon(7),rem:open?(5-dow)*86400+18*3600-tod:(8-dow)*86400-tod}}
+const H13=13*3600,open=(dow===1&&tod>=H13)||(dow>=2&&dow<=4)||(dow===5&&tod<H13);
+return{open,wk:mon(0),prev:mon(7),rem:open?(5-dow)*86400+H13-tod:(dow===1?H13-tod:(8-dow)*86400+H13-tod)}}
 T=now();
 function tick(){const was=T.open;T=now();
 const r=Math.max(0,T.rem),d=Math.floor(r/86400),h=Math.floor(r%86400/3600),m=Math.floor(r%3600/60),s=r%60;
@@ -200,7 +200,7 @@ smoke.forEach(q=>{x.globalAlpha=Math.max(0,q.l)*.55;x.fillStyle="#5fd068";x.begi
 if(flash>0){x.fillStyle="rgba(255,255,255,"+flash+")";x.fillRect(0,0,W,H)}
 if(dark){x.fillStyle="rgba(8,16,40,.4)";x.fillRect(0,0,W,H)}
 x.textAlign="center";
-if(!T.open)panel(130,[["Stängt","800 36px",252],["Öppnar måndag kl 00:00","600 16px",290]]);
+if(!T.open)panel(130,[["Stängt","800 36px",252],["Öppnar måndag kl 13:00","600 16px",290]]);
 else if(st==="play"||st==="dying"){x.font="800 56px ui-rounded,system-ui,sans-serif";x.lineWidth=8;x.strokeStyle="#000";x.lineJoin="round";x.strokeText(score,W/2,100);x.fillStyle="#fff";x.fillText(score,W/2,100)}
 else if(st==="over"){const mine=(rows.find(r=>r.name===uname)||{}).best||0;panel(190,[["Slut!","800 40px",252],["Poäng: "+score,"700 22px",296],["Veckans bästa: "+Math.max(mine,score),"600 17px",330]])}
 else panel(130,[["Flax","800 38px",252],["Tryck på Starta spelet","600 17px",292]])}
